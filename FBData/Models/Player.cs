@@ -14,16 +14,16 @@ namespace FBData.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerId { get; set; }
-        public required string PlayerName { get; set; }
-        public required Position Position { get; set; }
+        public  string? PlayerName { get; set; }
+        public string? Position { get; set; }
         public int JerseyNumber { get; set; }
         public int GoalScored { get; set; }
     }
-    public enum Position
-    {
-        GoalKeeper,
-        Defender,
-        Midfielder,
-        Forward
-    }
+    //public enum Position 
+    //{
+    //    GoalKeeper,
+    //    Defender,
+    //    Midfielder,
+    //    Forward
+    //}
 }

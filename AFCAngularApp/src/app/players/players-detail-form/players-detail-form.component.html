@@ -1,0 +1,43 @@
+<form #form ="ngForm" (submit) ="onSubmit(form)"  [class.submitted] ="service.formSubmitted">
+    <input type="hidden" name="playerId" [value]="service.formData.playerId" novalidate autocomplete="off">
+<div class="mb-3">
+    <label>Player Name</label>
+    <input class = "form-control form-control-lg" placeholder="Players Full Name"
+    #playerName="ngModel" 
+    [(ngModel)]="service.formData.playerName"
+    name ="name" required
+    >
+</div>
+
+<div class="mb-3">
+    <label>Postition</label>
+    <input class = "form-control form-control-lg" placeholder="Players Position"
+    #playerName="ngModel" 
+    [(ngModel)]="service.formData.position"
+   name ="first" required
+    >
+</div>
+<div class="row">
+<div class="mb-3 col-6">
+    <label>Jersey Number</label>
+    <input class = "form-control form-control-lg" placeholder="Jersey Number"
+    #playerName="ngModel" 
+    [(ngModel)]="service.formData.jerseyNumber"
+    required
+    name ="first" min="1" max = "100" 
+    >
+</div>
+
+<div class="mb-3 col-6">
+    <label>Goals Scored</label>
+    <input class = "form-control form-control-lg" placeholder="Goals Scored"
+    #playerName="ngModel" 
+    [(ngModel)]="service.formData.goalScored"
+    name ="first" min="0" required
+    >
+</div>
+</div>
+<div class="d-grid">
+    <button class="btn btn-lg btn-success" type=" submit">Save</button>
+</div>
+</form>

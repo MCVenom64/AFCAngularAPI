@@ -24,10 +24,10 @@ namespace FBData.Initialize
 
             var players = new Player[]
             {
-                new Player { PlayerName = "Thomas David", GoalScored = 0, Position = Position.GoalKeeper },
-                new Player { PlayerName = "Thomas David", GoalScored = 0, Position = Position.GoalKeeper },
-                new Player { PlayerName = "Thomas David", GoalScored = 0, Position = Position.GoalKeeper },
-                new Player { PlayerName = "Thomas David", GoalScored = 0, Position = Position.Defender }
+                new Player { PlayerName = "Petr Cech", GoalScored = 0, Position = "GoalKeeper" },
+                new Player { PlayerName = "Per Mertesacker", GoalScored = 0, Position = "Defender"   },
+                new Player { PlayerName = "Santi Cazorla", GoalScored = 0, Position = "Midfielder"  },
+                new Player { PlayerName = "Lukas Podolski", GoalScored = 3, Position = "Striker"  }
 
             };
 
