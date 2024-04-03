@@ -2,19 +2,16 @@ using FBData.Context;
 using FBData.Initialize;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using FBData.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-
-//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-//builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 var connectionsString = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 builder.Services.AddDbContext<FBContext>(options => options.UseSqlServer(connectionsString));
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

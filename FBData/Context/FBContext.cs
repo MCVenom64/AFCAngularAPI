@@ -1,5 +1,7 @@
-﻿using FBData.Models;
+﻿using FBData.Interface;
+using FBData.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +14,16 @@ namespace FBData.Context
 {
     public class FBContext : DbContext
     {
-
+        //Further work: Ideally get this to go on a interface, so we can use DI to make to make the app unit testable.
         public DbSet<Player> Players { get; set; }
 
         public FBContext(DbContextOptions<FBContext> options) : base(options) { }
-        // The following configures EF to create a Sqlite database file in the
-        // special "local" folder for your platform.
-
+ 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().ToTable("Player");
 
         }
+
     }
 }

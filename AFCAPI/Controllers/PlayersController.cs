@@ -1,8 +1,13 @@
 ﻿using FBData.Context;
+using FBData.DataHandler;
 using FBData.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Numerics;
+using FBData.Interface;
+using FBData.Helper;
 
 namespace AFCAPI.Controllers
 {
@@ -21,14 +26,16 @@ namespace AFCAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            return await _context.Players.ToListAsync();
+            var data = new PlayerData(_context);
+            return data.GetAll().ToList();
         }
 
         // GET: api/Players1/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var data = new PlayerData(_context);
+            var player = data.GetPlayer(id);
             if (player == null)
             {
                 return NotFound();
@@ -40,60 +47,59 @@ namespace AFCAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlayer(int id, Player player)
         {
-            if (id != player.PlayerId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(player).State = EntityState.Modified;
-
             try
             {
-                if (this.IsJerseyNotUnique(player))
+                if (id != player.PlayerId)
                 {
-                    return StatusCode(500, "Jersey Number is not Unique");
+                    return BadRequest();
                 }
-                else if (this.IsPlayerNotUnique(player))
-                {
-                    return StatusCode(500, "Player Name is not Unique");
-                }
-                else
-                {
-                    await _context.SaveChangesAsync();
-                }
+                var data = new PlayerData(_context);
+                data.UpdatePlayer(player);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ValidationException ex)
             {
-                if (!PlayerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(500, ex.Message);
+            }
+            catch (HandledException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error, Please try again or if this persists contact support");
+                //Logging would record any unhandled exception detail (with stack) and keep any important and unnecessay info from the client side
             }
 
-            return  Ok(await _context.Players.ToListAsync()); ;
+            return Ok(await _context.Players.ToListAsync()); ;
         }
 
         // POST: api/Players1
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
+            try
+            {
+                if (player == null)
+                {
+                    return BadRequest();
+                }
+                var data = new PlayerData(_context);
+                data.Add(player);
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (HandledException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error, Please try again or if this persists contact support");
+                //Logging would record any unhandled exception detail (with stack) and keep any important and unnecessay info from the client side
+            }
 
-            if (this.IsJerseyNotUnique(player))
-            {
-                return StatusCode(500, "Jersey Number is not Unique");
-            }else if(this.IsPlayerNotUnique(player))
-            {
-                return StatusCode(500, "Player Name is not Unique");
-            }
-            else
-            {
-                _context.Players.Add(player);
-                await _context.SaveChangesAsync();
-            }
             return Ok(await _context.Players.ToListAsync());
         }
 
@@ -106,29 +112,30 @@ namespace AFCAPI.Controllers
             {
                 return NotFound();
             }
-
-            _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Players.ToListAsync()); 
-        }
-
-        private bool PlayerExists(int id)
-        {
-            return _context.Players.Any(e => e.PlayerId  == id);
-        }
-
-        private bool IsJerseyNotUnique(Player player)
-        {
-            return _context.Players.Any(e=> e.JerseyNumber == player.JerseyNumber && player.PlayerId != player.PlayerId );
-        }
-
-        private bool IsPlayerNotUnique(Player player)
-        {if (player.PlayerName != null)
+            try
             {
-                return _context.Players.Any(e => e.PlayerName.Equals(player.PlayerName, StringComparison.CurrentCultureIgnoreCase) && player.PlayerId != player.PlayerId);
+                var data = new PlayerData(_context);
+                data.DeletePlayer(id);
+
             }
+            catch (ValidationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (HandledException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error, Please try again or if this persists contact support");
+                //Logging would record any unhandled exception detail (with stack) and keep any important and unnecessay info from the client side
+            }
+
+            return Ok(await _context.Players.ToListAsync());
         }
+
+
 
     }
 }

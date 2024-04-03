@@ -28,13 +28,10 @@ namespace FBData.Initialize
                 new Player { PlayerName = "Per Mertesacker", GoalScored = 0, Position = "Defender"   },
                 new Player { PlayerName = "Santi Cazorla", GoalScored = 0, Position = "Midfielder"  },
                 new Player { PlayerName = "Lukas Podolski", GoalScored = 3, Position = "Striker"  }
-
             };
 
             context.Players.AddRange(players);
-
             context.SaveChanges();
-
 
         }
 

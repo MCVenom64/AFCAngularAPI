@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/b59345be-8051-4718-ad24-e33e0d1d6a62/resourceGroups/FBContextRGroup/providers/Microsoft.Web/sites/AFCClientApp",
+    "appService.deploySubpath": "dist\\afcangular-app"
+}

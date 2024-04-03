@@ -18,6 +18,7 @@ namespace FBData.Models
         public string? Position { get; set; }
         public int JerseyNumber { get; set; }
         public int GoalScored { get; set; }
+
     }
     //public enum Position 
     //{
