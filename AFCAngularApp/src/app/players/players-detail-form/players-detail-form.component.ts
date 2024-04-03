@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { Players } from '../../shared/players.model';
 import { ToastrService } from 'ngx-toastr';
+import { from } from "linq-to-typescript";
 @Component({
     selector: 'app-players-detail-form',
     standalone: true,
@@ -17,7 +18,7 @@ export class PlayersDetailFormComponent {
     //List of players - to extend thisthi will be an aditional call to the API to get a list of players from database.
     positions = ['GoalKeeper', 'Defender', 'Midfielder', 'Striker'];
 
-    constructor(public service: PlayersService, private toastr: ToastrService) {
+    constructor(public service: PlayersService, private toastr: ToastrService) {    
     }
 
     onSubmit(form: NgForm) {
@@ -58,4 +59,7 @@ export class PlayersDetailFormComponent {
 
 
     }
+    // jerseyNumberValidation(form: NgForm){
+    //     return (from(this.service.list).any((x)=> x.jerseyNumber == this.service.formData.jerseyNumber && x.playerId != this.service.formData.playerId));
+    // }
 }

@@ -29,17 +29,14 @@ namespace AFCAPI.Controllers
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
             var player = await _context.Players.FindAsync(id);
-
             if (player == null)
             {
                 return NotFound();
             }
-
             return player;
         }
 
         // PUT: api/Players1/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlayer(int id, Player player)
         {
@@ -52,7 +49,18 @@ namespace AFCAPI.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                if (this.IsJerseyNotUnique(player))
+                {
+                    return StatusCode(500, "Jersey Number is not Unique");
+                }
+                else if (this.IsPlayerNotUnique(player))
+                {
+                    return StatusCode(500, "Player Name is not Unique");
+                }
+                else
+                {
+                    await _context.SaveChangesAsync();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,13 +78,22 @@ namespace AFCAPI.Controllers
         }
 
         // POST: api/Players1
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
 
+            if (this.IsJerseyNotUnique(player))
+            {
+                return StatusCode(500, "Jersey Number is not Unique");
+            }else if(this.IsPlayerNotUnique(player))
+            {
+                return StatusCode(500, "Player Name is not Unique");
+            }
+            else
+            {
+                _context.Players.Add(player);
+                await _context.SaveChangesAsync();
+            }
             return Ok(await _context.Players.ToListAsync());
         }
 
@@ -99,6 +116,18 @@ namespace AFCAPI.Controllers
         private bool PlayerExists(int id)
         {
             return _context.Players.Any(e => e.PlayerId  == id);
+        }
+
+        private bool IsJerseyNotUnique(Player player)
+        {
+            return _context.Players.Any(e=> e.JerseyNumber == player.JerseyNumber && player.PlayerId != player.PlayerId );
+        }
+
+        private bool IsPlayerNotUnique(Player player)
+        {if (player.PlayerName != null)
+            {
+                return _context.Players.Any(e => e.PlayerName.Equals(player.PlayerName, StringComparison.CurrentCultureIgnoreCase) && player.PlayerId != player.PlayerId);
+            }
         }
 
     }

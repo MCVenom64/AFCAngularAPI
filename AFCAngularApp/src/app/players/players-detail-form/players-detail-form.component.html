@@ -5,19 +5,17 @@
     <input class = "form-control form-control-lg" placeholder="Players Full Name"
     #playerName="ngModel" 
     [(ngModel)]="service.formData.playerName"
-    [ngModelOptions]="{standalone: true}" required
+    name="player" required
     
     >
 </div>
 
 <div class="mb-3">
-    <label>Postition</label>
-    
-    <input class = "form-control form-control-lg" placeholder="Players Position"
-    #playerName="ngModel" 
-    [(ngModel)]="service.formData.position"
-    [ngModelOptions]="{standalone: true}"  required
-    >
+    <label>Postition</label>   
+    <select class="form-control form-control-lg" aria-label="Position"  [(ngModel)] ="service.formData.position" name="position" required >
+        <option>--Select Position--</option>
+        <option [ngValue]="position" *ngFor="let position of positions">{{position}}</option>
+    </select>
 </div>
 <div class="row">
 <div class="mb-3 col-6">
@@ -26,8 +24,9 @@
     #playerName="ngModel" 
     [(ngModel)]="service.formData.jerseyNumber"
     required
-    [ngModelOptions]="{standalone: true}"  min="1" max = "100" 
+    name="jersey"  min="1" max = "100" 
     >
+
 </div>
 
 <div class="mb-3 col-6">
@@ -40,6 +39,6 @@
 </div>
 </div>
 <div class="d-grid">
-    <button class="btn btn-lg btn-success" type=" submit">Save</button>
+    <button [disabled]="!form.valid" class="btn btn-lg btn-success" type=" submit">Save</button>
 </div>
 </form>
