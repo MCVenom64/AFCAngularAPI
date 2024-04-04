@@ -5,11 +5,9 @@
     <input class = "form-control form-control-lg" placeholder="Players Full Name"
     #playerName="ngModel" 
     [(ngModel)]="service.formData.playerName"
-    name="player" required
-    
+    name="player" required  
     >
 </div>
-
 <div class="mb-3">
     <label>Postition</label>   
     <select class="form-control form-control-lg" aria-label="Position"  [(ngModel)] ="service.formData.position" name="position" required >
@@ -26,9 +24,7 @@
     required
     name="jersey"  min="1" max = "100" 
     >
-
 </div>
-
 <div class="mb-3 col-6">
     <label>Goals Scored</label>
     <input class = "form-control form-control-lg" placeholder="Goals Scored"

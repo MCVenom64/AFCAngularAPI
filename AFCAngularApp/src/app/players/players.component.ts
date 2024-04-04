@@ -3,6 +3,7 @@ import { PlayersDetailFormComponent } from "./players-detail-form/players-detail
 import { PlayersService } from '../shared/players.service';
 import { Players } from '../shared/players.model';
 import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-players',
@@ -29,9 +30,12 @@ if(confirm('Are you sure you want to delete this record?')){
     .subscribe({
      next: res=>{
      this.service.list = res as Players[]
-     this.toastr.error('Delete sucessfully', 'Player Detail')
+     this.toastr.info('Delete sucessfully', 'Player Detail')
     },
-     error:err => {console.log(err)}
+    error: err => {
+      let errObject:HttpErrorResponse = err;                   
+      this.toastr.error(errObject.error)
+  }
  })
 }
 }}
