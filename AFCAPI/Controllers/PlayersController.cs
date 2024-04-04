@@ -8,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Numerics;
 using FBData.Interface;
 using FBData.Helper;
+using System.Text.Json;
 
 namespace AFCAPI.Controllers
 {
@@ -58,16 +59,16 @@ namespace AFCAPI.Controllers
             }
             catch (ValidationException ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, JsonSerializer.Serialize( ex.Message));
             }
             catch (HandledException ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, JsonSerializer.Serialize( ex.Message));
             }
             catch (Exception)
             {
-                return StatusCode(500, "Internal Server Error, Please try again or if this persists contact support");
-                //Logging would record any unhandled exception detail (with stack) and keep any important and unnecessay info from the client side
+                return StatusCode(500, JsonSerializer.Serialize ("Internal Server Error, Please try again or if this persists contact support"));
+                //Logging would record any unhandled exception detail (with stack) and keep any important and unnecessay info from the client side. If all the clientside validation worked this should be the only thing that comes out of Error
             }
 
             return Ok(await _context.Players.ToListAsync()); ;
@@ -88,15 +89,15 @@ namespace AFCAPI.Controllers
             }
             catch (ValidationException ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, JsonSerializer.Serialize(ex.Message));
             }
             catch (HandledException ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, JsonSerializer.Serialize(ex.Message));
             }
             catch (Exception)
             {
-                return StatusCode(500, "Internal Server Error, Please try again or if this persists contact support");
+                return StatusCode(500, JsonSerializer.Serialize("Internal Server Error, Please try again or if this persists contact support"));
                 //Logging would record any unhandled exception detail (with stack) and keep any important and unnecessay info from the client side
             }
 
